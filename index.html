@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="js/perfect-scrollbar.min.css">
+    <script src="js/modernizr.js"></script>
+</head>
+
+<body>
+    <header>
+    </header>
+
+    <nav>
+        <section class="taglist">
+        </section>
+    </nav>
+
+    <section class="main">
+    </section>
+
+    <footer>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js"></script>
+    <script src="js/perfect-scrollbar.min.js"></script>
+
+    <script>
+        // returns "true" if link is recent depending on the number of days posted.
+        var isRecent = function (date, numberOfDays) {
+            var date = Date.parse(date),
+                today = Date.now(),
+                days = 1000 * 60 * 60 * 24;
+            if ((Math.round(today / days) - Math.round(date / days)) <= numberOfDays) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        $(function () {
+            var baseUrl = "http://feeds.delicious.com/v2/json/",
+                userName = "ttttttt",
+                count = 100,
+                howRecent = 7, // 7 days
+                tagList = [],
+                callUrl = baseUrl + userName + "?count=" + count + "&callback=?";
+
+            // initializing the ajax call
+            $.getJSON(callUrl, function (data) {
+                
+                // creating a ul class which would contain the links
+                $(".main").append("<ul class='list'></ul>");
+                
+                $.each(data, function (idx, obj) {
+                    var tagData = obj.t,
+                        tags = [],
+                        recentNotice = "";
+
+                    //checking link date "obj.dt", and checking if recent
+                    if (isRecent(obj.dt, howRecent) == true) {
+                        recentNotice = " recent";
+                    }
+                    
+                    // populating the tagList array
+                    for (x = 0; x < tagData.length; x++) {
+                        tags.push("<li class='tag'>" + tagData[x] + "</li>");
+                        tagList.push(tagData[x]);
+                    }
+                    
+                    $(".list").append("<li class='link" + recentNotice + "' data-title='" + obj.d + "'><ul><li class='link-title'><a href='" + obj.u + "' target=_blank>" + obj.d + "</a></li><li class='link-url'>" + obj.u + "</li><li class='link-tags'><ul>" + tags.join('') + "</ul></li></ul></li>");
+                });
+
+                //populating the list of available letters
+                var letterList = {
+                    letters: []
+                };
+                $('.link').each(function () {
+                    var itmLetter = $(this).text().substring(0, 1).toUpperCase();
+                    if (!(itmLetter in letterList)) {
+                        letterList[itmLetter] = [];
+                        letterList.letters.push(itmLetter);
+                    }
+                    letterList[itmLetter].push($(this))
+                });
+                letterList.letters.sort();
+                $.each(letterList.letters, function (i, letter) {
+                    letterList[letter].sort(function (a, b) {
+                        return $(a).text().toUpperCase().localeCompare($(b).text().toUpperCase()); //sort li elements of one letter
+                    });
+                    var ul = $("<ol/>"); //create new dom element and add li elements
+                    $.each(letterList[letter], function (idx, itm) {
+                        ul.append(itm);
+                    });
+                    $(".list").append($("<li/>").attr({
+                        class: "letter",
+                        id: letter
+                    }).append($("<span/>").addClass('letter-title').html(letter), ul)); //add the list to a new li and to #list ul
+                });
+                var container = document.querySelector('.list');
+                var msnry = new Masonry(container, {
+                    itemSelector: '.letter'
+                });
+                
+                /* END OF LINK LIST PART */
+                
+                /* START OF THE TAG LIST PART */
+                var occurences = {};
+
+                for (var i = 0, j = tagList.length; i < j; i++) {
+                    if (occurences[tagList[i]]) {
+                        occurences[tagList[i]]++;
+                    } else {
+                        occurences[tagList[i]] = 1;
+                    }
+                }
+
+                var tuples = [];
+                for (var key in occurences) tuples.push([key, occurences[key]]);
+
+                tuples.sort(function (a, b) {
+                    a = a[1];
+                    b = b[1];
+
+                    return a > b ? -1 : (a < b ? 1 : 0);
+                });
+
+                for (var i = 0; i < tuples.length; i++) {
+                    var key = tuples[i][0];
+                    var value = tuples[i][1];
+                    $('.taglist').append($('<li/>').addClass('taglist-tag').html("<div class='taglist-word'>" + key + "</div><span class='numberofwords'> (" + value + ")</span>"));
+                    //console.log("key: "+ key + " / value: " + obj[key]);
+                }
+                /* END OF THE TAG LIST PART */
+
+                
+                var recentDomElement = $("<span/>").attr({
+                    class: 'recent-notice'
+                });
+                $('.recent .link-title').css('position', 'relative').append(recentDomElement);
+
+                var text = " = fresh links (less than " + howRecent + " days ago)";
+                var legende = $("<aside/>").attr({
+                    class: 'legende'
+                }).append(recentDomElement, text);
+                $('body').append(legende);
+
+                /* LAYOUT FIXES */
+                
+                //width fix if css "csscalc()", "vh" aren't supported
+                if (!Modernizr.csscalc) {
+                    $('.main').width($(window).width() - 200)
+                }
+                if (!Modernizr.cssvhunit) {
+                    $('.main').height($(window).height())
+                }
+
+                // custom scrollbar
+                $('nav, .main').perfectScrollbar();
+
+                
+                /* TAG HIGHLIGHT */
+                
+                // Tag highlight
+                $('.taglist li').hover(
+                    function () {
+                        //console.log($(".taglist-word", this).text());
+                        var tagElement = $(".taglist-word", this).text();
+                        $('.tag').each(function () {
+                            if ($(this).text() == tagElement) {
+                                $(this).addClass('highlight');
+                            }
+                        });
+                    }, function () {
+                        $('.highlight').removeClass('highlight');
+                    }
+                )
+                $('.taglist li').click(function () {
+                    $(this).add('.highlight').toggleClass('selected')
+                })
+            });
+
+            // layout adjustement on window resize
+            $(window).resize(function () {
+                if (!Modernizr.csscalc) {
+                    $('.main').width($(window).width() - 200)
+                }
+                if (!Modernizr.cssvhunit) {
+                    $('nav, .main').height($(window).height())
+                }
+            })
+
+        })
+    </script>
+
+</body>
+
+</html>
