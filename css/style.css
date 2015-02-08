@@ -1,0 +1,182 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/***************  ****************/
+body {
+  font-family: sans-serif;
+  font-size: 12px;
+  background: grey;
+  overflow: hidden; }
+
+nav {
+  position: fixed;
+  height: 100%;
+  width: 180px;
+  padding: 24px 0;
+  overflow: hidden; }
+
+.main {
+  position: relative;
+  margin-left: 200px;
+  width: calc(100% - 200px);
+  padding: 24px 0;
+  height: 100vh;
+  overflow: hidden; }
+
+.list {
+  margin: 0 auto; }
+
+.link {
+  margin: 0 0 1.5rem 0;
+  width: 100%; }
+  .link a {
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: none; }
+    .link a:hover {
+      color: white;
+      border-bottom: 2px solid white; }
+
+.link-title {
+  margin: 0 0 0.5rem 0;
+  color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  font-size: 0.7rem;
+  color: darkblue;
+  line-height: 1rem; }
+
+.link-url {
+  color: rgba(0, 0, 0, 0.5);
+  height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: 0.7rem; }
+
+.tag {
+  padding: 2px 5px;
+  margin: 0 8px 8px 0;
+  background: rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  border-radius: 4px;
+  transition: all 150ms;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: monospace;
+  font-size: 0.7rem; }
+  .tag.selected {
+    color: white;
+    background: rgba(0, 0, 0, 0.9); }
+
+.highlight {
+  color: white;
+  background: rgba(0, 0, 0, 0.6); }
+
+.letter {
+  display: table;
+  display: inline-block;
+  vertical-align: top;
+  width: 300px;
+  margin: 0 10px 4rem 10px; }
+
+.letter-title {
+  display: inline-block;
+  font-weight: bolder;
+  -webkit-transform: scaleX(1.8) translateX(18%);
+  -moz-transform: scaleX(1.8) translateX(18%);
+  transform: translateX(30%) scaleX(1.8);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: rgba(0, 0, 0, 0.8); }
+
+.taglist {
+  padding: 0 0 0 24px; }
+  .taglist .taglist-word {
+    font-family: monospace;
+    font-size: 0.7rem;
+    display: inline-block; }
+  .taglist li {
+    display: table;
+    list-style: none;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 150ms;
+    font-size: 0.7rem;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.6); }
+    .taglist li:hover {
+      cursor: default;
+      color: white;
+      background: rgba(0, 0, 0, 0.6); }
+    .taglist li.selected {
+      color: white;
+      background: rgba(0, 0, 0, 0.9); }
+
+.recent-notice {
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  background: yellow;
+  border-radius: 4px;
+  margin: 0 0 0 8px; }
+
+.legende {
+  position: fixed;
+  color: rgba(0, 0, 0, 0.6);
+  display: inline-block;
+  top: 190px;
+  right: 0;
+  font-size: 1em;
+  -webkit-transform-origin: 89% 0%;
+  -moz-transform-origin: 86% 0%;
+  -moz-transform: rotate(90deg);
+  transform: rotate(90deg);
+  font-size: 0.7rem; }
+
+/*# sourceMappingURL=style.css.map */
