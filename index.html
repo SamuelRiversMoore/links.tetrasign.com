@@ -164,7 +164,7 @@
                 
                 /* TAG HIGHLIGHT */
                 
-                // Tag highlight
+                // Tag & links highlight on hover. Checks if there is selected tags.
                 var selectionCount = 0;
                 $('.taglist li').hover(
                     function () {
@@ -195,10 +195,11 @@
                         }
                     }
                 )
+                // check if there is a selected tag, then make 'link' element visible, or not
                 $('.taglist li').click(function () {
                     selectionCount = 0;
                     $(this).add('.highlight').toggleClass('selected');
-                    $('.link').each(function () {
+                    $('.link').each(function () { 
                         if ($(this).find('.selected').length != 0) {
                             selectionCount += 1;
                             $(this).css({ opacity: 1 });
@@ -207,7 +208,7 @@
                         }
                     });
                 })
-                $('li.link').hover(
+                $('li.link').hover( // make unselected elements visible on hover
                     function () {
                         if ($(this).find('.selected').length == 0 && selectionCount != 0) {
                             $(this).css({ opacity: 1 });
