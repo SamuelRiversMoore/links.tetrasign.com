@@ -207,6 +207,17 @@
                         }
                     });
                 })
+                $('li.link').hover(
+                    function () {
+                        if ($(this).find('.selected').length == 0 && selectionCount != 0) {
+                            $(this).css({ opacity: 1 });
+                        }
+                    }, function () {
+                        if ($(this).find('.selected').length == 0 && selectionCount != 0) {
+                            $(this).css({ opacity: 0.25 });
+                        }
+                    }
+                )
             });
 
             // layout adjustement on window resize
