@@ -165,21 +165,41 @@
                 /* TAG HIGHLIGHT */
                 
                 // Tag highlight
+                var selectionCount = 0;
                 $('.taglist li').hover(
                     function () {
                         //console.log($(".taglist-word", this).text());
                         var tagElement = $(".taglist-word", this).text();
+                        $('.link').css({ opacity: 0.2 });
+                        $('.link').each(function () {
+                            if ($(this).find('.selected').length != 0){
+                                $(this).css({ opacity: 1 });
+                            }
+                        });
                         $('.tag').each(function () {
                             if ($(this).text() == tagElement) {
+                                $(this).closest('.link').css({ opacity: 1 });
                                 $(this).addClass('highlight');
                             }
                         });
                     }, function () {
                         $('.highlight').removeClass('highlight');
+                        if (selectionCount == 0){
+                            $('.link').css({ opacity: 1 });
+                        }
                     }
                 )
                 $('.taglist li').click(function () {
-                    $(this).add('.highlight').toggleClass('selected')
+                    selectionCount = 0;
+                    $(this).add('.highlight').toggleClass('selected');
+                    $('.link').each(function () {
+                        if ($(this).find('.selected').length != 0) {
+                            selectionCount += 1;
+                            $(this).css({ opacity: 1 });
+                        } else {
+                            $(this).css({ opacity: 0.2 });
+                        }
+                    });
                 })
             });
 
